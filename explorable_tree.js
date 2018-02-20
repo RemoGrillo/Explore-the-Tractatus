@@ -4,7 +4,6 @@
 // Get JSON data
 treeJSON = d3.json("tractatus.json", function(error, treeData) {
 
-    // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 55;
     // variables for drag/drop
@@ -12,7 +11,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
     var draggingNode = null;
     // panning variables
     var panSpeed = 200;
-    var panBoundary = 20; // Within 20px from edges will pan when dragging.
     // Misc. variables
     var i = 0;
     var duration = 750;
@@ -32,8 +30,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
         });
 
     // A recursive helper function for performing some setup by walking through all nodes
-
-
     function visit(parent, visitFn, childrenFn) {
         if (!parent){
             return
@@ -59,20 +55,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
     }, function(d) {
         return d.children && d.children.length > 0 ? d.children : null;
     });
-
-
-
-    /*
-    sort the tree according to the node names
-
-    function sortTree() {
-        tree.sort(function(a, b) {
-            return b.content.en.toLowerCase() < a.content.en.toLowerCase() ? 1 : -1;
-        });
-    }
-    // Sort the tree initially incase the JSON isn't in a sorted order.
-    //sortTree();
-    */
 
 
 
@@ -113,47 +95,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
     // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
     var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
 
-    function initiateDrag(d, domNode) {
-        draggingNode = d;
-        d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
-        d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
-        d3.select(domNode).attr('class', 'node activeDrag');
-
-        svgGroup.selectAll("g.node").sort(function(a, b) { // select the parent and sort the path's
-            if (a.id != draggingNode.id) return 1; // a is not the hovered element, send "a" to the back
-            else return -1; // a is the hovered element, bring "a" to the front
-        });
-        // if nodes has children, remove the links and nodes
-        if (nodes.length > 1) {
-            // remove link paths
-            links = tree.links(nodes);
-            nodePaths = svgGroup.selectAll("path.link")
-                .data(links, function(d) {
-                    return d.target.id;
-                }).remove();
-            // remove child nodes
-            nodesExit = svgGroup.selectAll("g.node")
-                .data(nodes, function(d) {
-                    return d.id;
-                }).filter(function(d, i) {
-                    if (d.id == draggingNode.id) {
-                        return false;
-                    }
-                    return true;
-                }).remove();
-        }
-
-        // remove parent link
-        parentLink = tree.links(tree.nodes(draggingNode.parent));
-        svgGroup.selectAll('path.link').filter(function(d, i) {
-            if (d.target.id == draggingNode.id) {
-                return true;
-            }
-            return false;
-        }).remove();
-
-        dragStarted = null;
-    }
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-container").append("svg")
@@ -182,18 +123,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
         }
     }
 
-    /*
-    function expandAll(){
-        expand(root);
-        update(root);
-    }
-
-    function collapseAll(){
-        root.children.forEach(collapse);
-        collapse(root);
-        update(root);
-    }
-    */
 
     var overCircle = function(d) {
         selectedNode = d;
