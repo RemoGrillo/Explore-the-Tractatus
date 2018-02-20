@@ -243,14 +243,6 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
                         contentsLength.push(n.children[i].content.en.length);
                     }
                 }
-                /*
-                n.children.forEach(function(d){
-                    if(d.content !== undefined && Object.keys(d.content).length !== 0 && d.content.constructor === Object){
-                        //contentsLength.push($(d.content.en).text().length);
-                        contentsLength.push(d.content.en.length);
-                    }
-                });
-                */
 
                 var maxContentsLength = d3.max(contentsLength);
 
