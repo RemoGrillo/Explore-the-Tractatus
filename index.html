@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style type="text/css">
+
+    .node {
+        cursor: pointer;
+    }
+
+    .overlay{
+        background-color: white;
+    }
+
+    .node circle {
+        fill: #47180d;
+        stroke: #b41528;
+        stroke-width: 1.5px;
+    }
+
+    .node text {
+        font-size:10px;
+        font-family:sans-serif;
+    }
+
+    .node foreignObject {
+
+    }
+
+    .link {
+        fill: none;
+        stroke: #ccc;
+        stroke-width: 1.5px;
+    }
+
+    .templink {
+        fill: none;
+        stroke: red;
+        stroke-width: 3px;
+    }
+
+    .ghostCircle.show{
+        display:block;
+    }
+
+    .ghostCircle, .activeDrag .ghostCircle{
+        display: none;
+    }
+
+   #header {
+       position:absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       box-shadow: 0 0 30px 5px #999;
+       z-index: 100;
+       background-color: #B32825;
+   }
+
+    #header h1, h3, h6 {
+        position: relative;
+        text-align: center;
+        font-family: "Lucida Grande" ;
+        font-weight: 400;
+        margin: 14px;
+        color: white;
+    }
+
+
+    #tree-container {
+        position: absolute;
+        top: 92px;
+        left: 0;
+    }
+
+    #footer {
+        position:absolute;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 100;
+        background-color: #B32825;
+        box-shadow: 0 0 30px 5px #999;
+    }
+
+    #footer h6 {
+        position: relative;
+        text-align: center;
+        font-family: "Lucida Grande" ;
+        font-weight: 400;
+        margin: 14px;
+        color: white;
+    }
+
+</style>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="explorable_tree.js"></script>
+<body>
+<div id="header"><h1>Explore the Tractatus</h1>
+    <h6>An exegetical tool for the Tractatus Logico-Philosophicus by Ludwig Wittgenstein</h6>
+</div>
+<div id="tree-container"></div>
+<div id="footer"><h6>Click on the root node to begin. Drag and drop to move, scroll to zoom.</h6></div>
+</body>
+</html>
