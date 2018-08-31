@@ -20,3 +20,4 @@ Future improvements could concern:
 
 Other needs or bug fixes that the community and the scholars can contribute to identify.
 
+https://remogrillo.github.io/Explore-the-Tractatus/
