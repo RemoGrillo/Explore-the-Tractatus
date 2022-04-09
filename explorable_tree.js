@@ -123,6 +123,38 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
         }
     }
 
+    function wrap(text, width) {
+        text.each(function () {
+            var text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                word,
+                line = [],
+                lineNumber = 0,
+                lineHeight = 1.1, // ems
+                x = text.attr("x"),
+                y = text.attr("y"),
+                dy = 0, //parseFloat(text.attr("dy")),
+                tspan = text.text(null)
+                            .append("tspan")
+                            .attr("x", x)
+                            .attr("y", y)
+                            .attr("dy", dy + "em");
+            while (word = words.pop()) {
+                line.push(word);
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(" "));
+                    line = [word];
+                    tspan = text.append("tspan")
+                                .attr("x", x)
+                                .attr("y", y)
+                                .attr("dy", ++lineNumber * lineHeight + dy + "em")
+                                .text(word);
+                }
+            }
+        });
+    }
 
     var overCircle = function(d) {
         selectedNode = d;
@@ -306,21 +338,28 @@ treeJSON = d3.json("tractatus.json", function(error, treeData) {
                 }
             });
 
-        nodeEnter.append("foreignObject")
+        nodeEnter.append("text")
             .attr("x", function(d) {
-                return d.children || d._children ? -10 : 10;
+                return d.children + 10 || d._children ? -10 : 10;
             })
             .attr("dy", ".35em")
             .attr('class', 'nodeText')
             .attr("text-anchor", function(d) {
                 return d.children || d._children ? "end" : "start";
             })
-            .html(function(d) {
-                return d.content.en;
+            .attr("fill", "black")
+            .style("fill", "black")
+            .style("text-anchor", "middle")
+            .attr("y", 20) 
+            .text(function(d) {
+                html1 = d.content.en;
+                feudo1 = $('.testino').html(html1);
+                return $(feudo1).text();
             })
-            .style("fill-opacity", 0)
             .style("font-family", 'Palatino')
-            .style("background-color", 'red');
+            .style("font-size", '12px')
+            .style("background-color", 'red')
+            .call(wrap, 280);
 
         // phantom node to give us mouseover in a radius around it
         nodeEnter.append("circle")
